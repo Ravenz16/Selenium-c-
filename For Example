@@ -1,0 +1,64 @@
+using System;
+using System.Text;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+ 
+namespace SeleniumTests
+{
+    [TestFixture]
+    public class Untitled
+    {
+        private IWebDriver driver;
+        private StringBuilder verificationErrors;
+        private string baseURL;
+ 
+        [SetUp]
+        public void SetupTest()
+        {
+            // You may use any WebDriver implementation. Firefox is used here as an example
+            driver = new FirefoxDriver();
+            baseURL = "http://bugscatcher.net";
+            verificationErrors = new StringBuilder();
+        }
+ 
+        [TearDown]
+        public void TeardownTest()
+        {
+            try
+            {
+                driver.Quit();
+            }
+            catch (Exception)
+            {
+                // Ignore errors if unable to close the browser
+            }
+            Assert.AreEqual("", verificationErrors.ToString());
+        }
+ 
+        [Test]
+        public void TheUntitledTest()
+        {
+            // open | /qa |
+            driver.Navigate().GoToUrl(baseURL);
+ 
+            // assertTitle | Bugs Catcher |
+            Assert.AreEqual("Bugs Catcher", driver.Title);
+ 
+            // type | name=s | Selenium WebDriver
+            driver.FindElement(By.Name("s")).SendKeys("Selenium WebDriver");
+ 
+            // click | id=searchsubmit |
+            driver.FindElement(By.Id("searchsubmit")).Click();
+ 
+            // assertTitle | Search Results Selenium WebDriver -Bugs Catcher |
+            Assert.AreEqual("Search Results Selenium WebDriver -Bugs Catcher", driver.Title);
+ 
+            //assertText present
+            Assert.IsTrue(driver.PageSource.Contains("Результаты поиска"));
+ 
+            //assertLink present
+            driver.FindElement(By.LinkText("Выпуск Selenium 2.0"));
+        }
+    }
+}
