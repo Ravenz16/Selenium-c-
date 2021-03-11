@@ -1,0 +1,20 @@
+using NUnit.Framework;
+using System;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+
+namespace SeleniumTests
+{
+    [TestFixture()]
+    public class Test
+    {
+        [Test()]
+        public void TestCase()
+        {
+            IWebDriver driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("http://google.com/");
+            Assert.IsTrue(driver.Url.Contains("google.com"), "Что-то не так =(");
+            driver.Quit();
+        }
+    }
+}
